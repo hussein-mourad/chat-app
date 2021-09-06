@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+html {
+  scroll-behavior: smooth;
+  scroll-margin-top: 2rem;
+}
+
+html, body{
+  @apply h-full min-h-screen;
+}
+
+*:focus {
+  -webkit-tap-highlight-color: transparent;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  outline: none !important;
+}
+
+@media only screen and (max-width: 425px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .sidedrawer-scrollbar {
+    direction: ltr !important;
+  }
+}
+
+.sidedrawer-scrollbar {
+  direction: rtl;
+}
+
+.sidedrawer-scrollbar > div {
+  direction: ltr !important;
+}
+
+/* ::-webkit-scrollbar {
+  @apply w-3;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px hsl(0, 0%, 70%);
+  @apply rounded-lg;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-lg bg-base-200;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-base-300/80;
+} */
+
+.sidedrawer-scrollbar::-webkit-scrollbar {
+  @apply float-left w-1;
+}
+
+.sidedrawer-scrollbar::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px hsl(0, 0%, 70%);
+  @apply rounded-lg;
+}
+
+.sidedrawer-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-yellow-500 rounded-lg;
+}
+
+.sidedrawer-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-yellow-600/80;
+}
+
+button, a{
+  @apply focus-visible:ring-2 focus-visible:ring-black/90 !important;
+}
+
+.scrollbar-hidden::-webkit-scrollbar{
+  display: none;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+/* 
+* {
+  margin: 0;
+  font-size: 20px;
+}
+
+body {
+  display: grid;
+  place-content: center;
+  height: 100vh;
+  background: #1c212b;
+}
+
+.text-content {
+  width: 300px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 6px;
+}
+
+/* use https://github.com/josephschmitt/Clamp.js for polyfill */
+
+/* .text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+} */ 
