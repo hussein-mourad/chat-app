@@ -1,5 +1,10 @@
 import cn from "classnames";
-import React, { InputHTMLAttributes, ReactElement, ReactNode } from "react";
+import React, {
+  ForwardedRef,
+  InputHTMLAttributes,
+  ReactElement,
+  ReactNode,
+} from "react";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   left?: ReactNode;
@@ -9,12 +14,12 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
 }
 
-export default function Input({
+export default function InputField({
   left,
   right,
   label,
   error,
-  className,
+  className = "",
   ...props
 }: InputProps): ReactElement {
   const inputStyles = cn("w-full h-full px-4 rounded-btn bg-base-200", {

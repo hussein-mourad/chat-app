@@ -1,16 +1,15 @@
 import useOnClickOutside from "hooks/useOnClickOutside";
-import {
+import React, {
   InputHTMLAttributes,
   ReactElement,
   ReactNode,
   useRef,
   useState,
 } from "react";
-import Input from "./Input";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
-  inputClassName?: string;
+  className?: string;
   error?: string;
   options: string[];
   children?: ReactNode;
@@ -18,8 +17,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export default function SelectGroup({
-  className,
-  inputClassName,
+  className = "",
   label,
   error,
   options,
@@ -46,18 +44,17 @@ export default function SelectGroup({
   };
 
   return (
-    <div className={`${className} w-full relative h-20`} ref={ref}>
-      <Input></Input>
+    <div className="relative w-full" ref={ref}>
       <label
         className="block mb-2 text-sm text-gray-800"
         htmlFor={props.id || label || props.name}
       >
         {label}
       </label>
+
       <input
         ref={inputRef}
-        id={props.id || label || props.name}
-        className={`${inputClassName} w-full rounded-xl border-gray-400`}
+        className={`${className} w-full rounded-lg input bg-base-200`}
         onChange={handleChange}
         onKeyDown={(e) => {
           if (e.key === "ArrowDown") {
@@ -71,13 +68,13 @@ export default function SelectGroup({
       />
       {inputRef?.current?.value && showOptions && filteredOptions.length > 0 && (
         <div
-          className="absolute left-0 w-full p-2 transform translate-y-1 bg-white border border-gray-400 rounded-md shadow top-full"
+          className="absolute left-0 w-full p-2 transform translate-y-1 top-full rounded-btn card bg-base-200"
           ref={optionsWrapper}
         >
           {filteredOptions.map((option, index) => (
             <button
               key={option}
-              className="block w-full px-3 py-2 text-left rounded-md focus:bg-gray-100/90 hover:bg-gray-100/90 focus-visible:bg-gray-50"
+              className="block w-full px-3 py-2 text-left rounded-md btn bg-base-200 "
               onClick={() => {
                 let e = {
                   target: {

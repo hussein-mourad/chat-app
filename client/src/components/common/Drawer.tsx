@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { ArrowBackIos, ExpandMore, Search } from "@material-ui/icons";
 import { ReactElement } from "react";
-import Input from "./Input";
+import InputField from "./InputField";
 interface Props {
   text: string;
 }
@@ -18,7 +18,7 @@ export default function Drawer({ text }: Props): ReactElement {
 
       <div className="mb-[55px] sm:mb-16 h-full overflow-auto scrollbar-hidden p-5">
         <p>
-          <Input
+          <InputField
             placeholder="Search"
             left={<Search style={{ margin: "8px", color: "white" }} />}
           />
