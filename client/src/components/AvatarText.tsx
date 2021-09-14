@@ -1,0 +1,24 @@
+import React, { ReactElement, ReactNode } from "react";
+
+interface Props {
+  className?: string;
+  avatar: ReactNode;
+  text: string;
+}
+
+export default function AvatarText({
+  className = "my-1",
+  avatar,
+  text,
+}: Props): ReactElement {
+  return (
+    <div className={"flex items-center" + " " + className}>
+      <div className="avatar">
+        <div className="!flex items-center justify-center w-8 h-8 mr-3 text-sm text-bold rounded-btn bg-base-200">
+          {avatar}
+        </div>
+      </div>
+      <p className="block">{text}</p>
+    </div>
+  );
+}

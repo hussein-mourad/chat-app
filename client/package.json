@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "cross-env NODE_ENV=development; node ./devServer.js",
+    "dev:next": "cross-env NODE_ENV=development; next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -17,15 +18,18 @@
     "formik": "^2.2.9",
     "next": "11.1.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "socket.io-client": "^4.2.0"
   },
   "devDependencies": {
-    "@types/classnames": "^2.3.1",
     "@types/react": "17.0.19",
     "autoprefixer": "^10.3.4",
+    "cross-env": "^7.0.3",
     "cssnano": "^5.0.8",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^2.0.1",
     "prettier": "^2.3.2",
     "tailwindcss": "^2.2.9",
     "typescript": "4.4.2"

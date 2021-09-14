@@ -39,22 +39,22 @@ html, body{
   direction: ltr !important;
 }
 
-/* ::-webkit-scrollbar {
-  @apply w-3;
+::-webkit-scrollbar {
+  @apply w-[6px];
 }
 
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px hsl(0, 0%, 70%);
-  @apply rounded-lg;
+  /* box-shadow: inset 0 0 1px hsl(0, 0%, 30%); */
+  @apply rounded-lg bg-base-100;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply rounded-lg bg-base-200;
+  @apply rounded-lg bg-base-content-2/50;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-base-300/80;
-} */
+  @apply bg-base-content-2/70;
+}
 
 .sidedrawer-scrollbar::-webkit-scrollbar {
   @apply float-left w-1;
