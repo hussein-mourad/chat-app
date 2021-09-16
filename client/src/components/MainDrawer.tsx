@@ -8,7 +8,7 @@ interface Props {}
 export default function MainDrawer({}: Props): ReactElement {
   const [value, setValue] = useState("");
   // const { user } = useAuthentication();
-  const user = {}
+  const user = {avatar:'', username:"", }
 
   return (
     <>
