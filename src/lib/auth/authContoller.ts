@@ -6,7 +6,13 @@ const TEN_DAYS_IN_SECONDS = 10 * 24 * 60 * 60;
 const TEN_DAYS_IN_MILLISECONDS = TEN_DAYS_IN_SECONDS * 1000;
 
 async function isAuth(req: Request, res: Response) {
-  res.json({ user: res.locals.user });
+  const user = res.locals.user;
+  res.json({
+    id: user._id,
+    username: user.username,
+    avatar: user.avatar,
+    currentRoom: user.currentRoom,
+  });
 }
 
 async function login(req: Request, res: Response) {
@@ -25,6 +31,8 @@ async function login(req: Request, res: Response) {
     res.status(201).json({
       id: user._id,
       username: user.username,
+      avatar: user.avatar,
+      currentRoom: user.currentRoom,
     });
   } catch (err: any) {
     res.status(401).json(handleErrors(err));
@@ -35,7 +43,10 @@ async function signup(req: Request, res: Response) {
   const { username, password } = req.body;
 
   try {
-    let user = await User.create({ username, password });
+    const avatar = `https://eu.ui-avatars.com/api/?name=${
+      username[0] + username[1]
+    }`;
+    let user = await User.create({ username, password, avatar });
     const token = createToken(user._id);
 
     res.cookie("jwt", token, {
@@ -43,10 +54,12 @@ async function signup(req: Request, res: Response) {
       maxAge: TEN_DAYS_IN_MILLISECONDS,
       signed: true,
     });
-    
+
     res.status(201).json({
       id: user._id,
       username: user.username,
+      avatar: user.avatar,
+      currentRoom: user.currentRoom,
     });
   } catch (err: any) {
     console.error(err);

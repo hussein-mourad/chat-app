@@ -10,7 +10,7 @@ import {authRouter} from "./lib/auth";
 import http from "http"
 import {Server} from "socket.io"
 
-dotenv.config({ path: path.join(__dirname, "config/.env") });
+dotenv.config();
 
 const app: Application = express();
 const server = http.createServer(app);
@@ -45,6 +45,10 @@ app.use(
 
 io.on("connection", (socket)=>{
   console.log(socket.id);
+  socket.emit("message", "Hello and Welcome")
+  socket.on("send_message", (data)=>{
+    socket.emit("message", data)
+  })
 })
 
 app.get("/", (req: any, res: any) => {

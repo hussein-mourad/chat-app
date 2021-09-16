@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Add, ExpandMore, Search } from "@material-ui/icons";
+import { ArrowBackIos, ExpandMore, Search } from "@material-ui/icons";
 import useAuthentication from "hooks/useAuthentication";
 import React, { ReactElement, useState } from "react";
 import { AutoComplete, AvatarText } from "./index";
@@ -7,16 +7,15 @@ interface Props {}
 
 export default function MainDrawer({}: Props): ReactElement {
   const [value, setValue] = useState("");
-  // const { user } = useAuthentication();
-  const user = {}
+  const { user } = useAuthentication();
 
   return (
     <>
-      <div className="justify-between navbar shadow-navbar min-h-[55px] sm:min-h-16 w-full px-5">
-        <h1 className="text-lg font-bold">Channels</h1>
-        <button className="btn btn-sm btn-secondary btn-square ">
-          <Add />
+      <div className="px-5 navbar shadow-navbar min-h-[55px] sm:min-h-16">
+        <button className="mr-3">
+          <ArrowBackIos />
         </button>
+        <h1 className="text-lg font-bold">gfkgjf</h1>
       </div>
       <div className="mb-[55px] sm:mb-16 h-full overflow-y-auto scrollbar-hidden p-5">
         <AutoComplete
@@ -51,10 +50,3 @@ export default function MainDrawer({}: Props): ReactElement {
     </>
   );
 }
-
-// <div className="px-5 navbar shadow-navbar min-h-[55px] sm:min-h-16">
-//         <button className="mr-3">
-//           <ArrowBackIos />
-//         </button>
-//         <h1 className="text-lg font-bold">gfkgjf</h1>
-//       </div>

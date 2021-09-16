@@ -73,9 +73,13 @@ html, body{
   @apply bg-yellow-600/80;
 }
 
-button, a, .input{
+button, a{
   @apply focus-visible:ring-2 focus-visible:ring-gray-300 !important;
+}
+
+.input {
   @apply focus:ring-2 focus:ring-gray-300;
+  @apply focus-within:ring-2 focus-within:ring-gray-300;
 }
 
 .scrollbar-hidden::-webkit-scrollbar{

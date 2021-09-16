@@ -68,7 +68,7 @@ module.exports = {
 
           "--padding-card": "2rem",
 
-          "--btn-text-case": "lowercase",
+          "--btn-text-case": "normal",
           "--navbar-padding": ".5rem",
           "--border-btn": "1px",
           "--focus-ring": "1px",

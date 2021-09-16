@@ -3,9 +3,10 @@ import { Document, Model, model, Schema } from "mongoose";
 import isStrongPassword from "validator/lib/isStrongPassword";
 
 export interface IUser {
+  avatar: string;
   username: string;
   password: string;
-  currentRoom:string;
+  currentRoom: string;
 }
 
 export interface UserModel extends Model<IUser> {
@@ -15,6 +16,10 @@ export interface UserModel extends Model<IUser> {
 
 export const userSchema = new Schema<IUser, UserModel, IUser>(
   {
+    avatar: {
+      type: String,
+      trim: true,
+    },
     username: {
       type: String,
       unique: true,
@@ -67,5 +72,4 @@ userSchema.statics.isValidUser = async function (_id: string) {
   throw new Error("User not found");
 };
 
-const User = model<IUser, UserModel>("User", userSchema);
-export default User;
+export default model<IUser, UserModel>("User", userSchema);

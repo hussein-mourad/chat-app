@@ -17,10 +17,9 @@ export default function InputField({
   className = "",
   ...props
 }: InputProps): ReactElement {
-  const inputStyles = cn("w-full h-full px-4 rounded-btn bg-base-200", {
+  const inputStyles = cn("w-full h-full px-4 rounded-btn bg-transparent", {
     "rounded-l-none pl-0": left,
     "rounded-r-none pr-0": right,
-    className,
   });
 
   return (
@@ -30,14 +29,14 @@ export default function InputField({
           <span className="label-text">{label}</span>
         </label>
       )}
-      <div className="flex px-0 input focus-within:ring-2 focus-within:ring-gray-300 bg-base-200">
-        {left && <div className="flex items-center">{left}</div>}
+      <div className={cn("flex px-0 input", className)}>
+        {left && <div className="flex items-center bg-transparent">{left}</div>}
         <input
           id={props.id || label || props.name}
           className={inputStyles}
           {...props}
         />
-        {right && <div className="flex items-center">{right}</div>}
+        {right && <div className="flex items-center bg-transparent">{right}</div>}
       </div>
       {error && (
         <small className="label">

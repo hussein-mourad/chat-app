@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { Close, Send } from "@material-ui/icons";
-import React, { ReactElement, ReactNode } from "react";
-import { Header, InputField, MainDrawer } from "./index";
+import React, { ReactElement, ReactNode, useContext, useState } from "react";
+import { SocketContext } from "../providers/SocketProvider";
+import { ChannelDrawer, Header, InputField, MainDrawer } from "./index";
 
 interface Props {
   title: string;
@@ -9,6 +10,14 @@ interface Props {
 }
 
 export default function MainLayout({ title, children }: Props): ReactElement {
+  const socket = useContext(SocketContext);
+  const [message, setMessage] = useState("");
+  const [channelView, setChannelView] = useState(false);
+
+  const sendMessage = () => {
+    socket.emit("send_message", message);
+  };
+
   return (
     <div className="min-h-screen drawer drawer-mobile">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -21,9 +30,15 @@ export default function MainLayout({ title, children }: Props): ReactElement {
         <div className="fixed bottom-0 right-0 flex items-center justify-center w-screen lg:w-[calc(100%-320px)] h-20 px-3 sm:px-10 bg-base-100">
           <InputField
             placeholder="Type a message here"
+            className="bg-base-200"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             right={
               <div>
-                <button className="m-1 btn btn-primary btn-square btn-sm">
+                <button
+                  className="m-1 btn btn-primary btn-square btn-sm"
+                  onClick={sendMessage}
+                >
                   <Send style={{ fontSize: 15 }} />
                 </button>
               </div>
@@ -39,7 +54,7 @@ export default function MainLayout({ title, children }: Props): ReactElement {
           </div>
         </label>
         <aside className="relative menu w-[85%] sm:w-[70%] lg:w-80 bg-base-300">
-          <MainDrawer />
+          {!channelView ? <MainDrawer /> : <ChannelDrawer />}
         </aside>
       </div>
     </div>

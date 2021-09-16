@@ -14,11 +14,11 @@ export default function AvatarText({
   return (
     <div className={"flex items-center" + " " + className}>
       <div className="avatar">
-        <div className="!flex items-center justify-center w-8 h-8 mr-3 text-sm text-bold rounded-btn bg-base-200">
+        <div className="!flex items-center justify-center w-11 h-11 mr-3 text-lg font-semibold rounded-btn bg-base-200">
           {avatar}
         </div>
       </div>
-      <p className="block">{text}</p>
+      <p className="block text-lg font-bold">{text}</p>
     </div>
   );
 }
