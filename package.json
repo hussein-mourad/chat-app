@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node ./dist/app.js",
-    "dev": "npm-run-all -p dev:server dev:client",
+    "dev": "kill-port 5000 3000; npm-run-all -p dev:server dev:client",
     "dev:client": "npm run dev --prefix client",
-    "dev:server": "nodemon ./src/app.ts",
-    "build": "tsc -p ."
+    "dev:server": "nodemon  ./src/server.ts",
+    "build": "rimraf dist/ tsc -p ."
   },
   "nodemonConfig": {
     "verbose": true,
@@ -18,10 +18,17 @@
       "node_modules/",
       "dist/"
     ],
+    "delay": 500,
     "watch": "src/",
     "ext": "js,json,ts",
+    "execMap": {
+      "ts": "ts-node --transpile-only"
+    },
     "env": {
       "NODE_ENV": "development"
+    },
+    "events": {
+      "restart": "kill-port 5000"
     }
   },
   "dependencies": {
@@ -34,6 +41,7 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
     "mongoose": "^6.0.4",
     "morgan": "~1.9.1",
     "request": "^2.88.2",
@@ -49,6 +57,7 @@
     "@types/express-session": "^1.17.4",
     "@types/http-errors": "^1.8.1",
     "@types/jsonwebtoken": "^8.5.5",
+    "@types/lodash": "^4.14.173",
     "@types/morgan": "^1.9.3",
     "@types/node": "^16.9.1",
     "@types/request": "^2.48.7",

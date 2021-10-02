@@ -6,7 +6,8 @@ const TEN_DAYS_IN_SECONDS = 10 * 24 * 60 * 60;
 const TEN_DAYS_IN_MILLISECONDS = TEN_DAYS_IN_SECONDS * 1000;
 
 async function isAuth(req: Request, res: Response) {
-  const user = res.locals.user;
+  let user = res.locals.user;
+  user = await User.findOne({_id:user._id}).populate("currentRoom").exec();
   res.json({
     id: user._id,
     username: user.username,
@@ -67,6 +68,20 @@ async function signup(req: Request, res: Response) {
   }
 }
 
+
+async function updateCurrentRoom(req: Request, res: Response) {
+  try {
+    let result = await User.updateOne(
+      { _id: res.locals.user._id.toString() },
+      { currentRoom: req.body.currentRoom }
+    );
+    res.json("updated successfully")
+  } catch (error: any) {
+    console.log(error);
+  }
+}
+
+
 function logout(req: Request, res: Response) {
   res.cookie("jwt", "", { maxAge: 1 });
   res.json("Logout successfully");
@@ -105,4 +120,5 @@ export default {
   login,
   logout,
   signup,
+  updateCurrentRoom
 };

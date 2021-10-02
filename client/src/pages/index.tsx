@@ -20,8 +20,7 @@ const Home: NextPage = (): ReactElement => {
     });
 
     socket.on("message", (data) => {
-      console.log(data);
-      setMessages(messages.concat(data));
+      setMessages(messages =>[...messages, data]);
     });
 
     return () => {};

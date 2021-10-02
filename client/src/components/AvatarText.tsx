@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function AvatarText({
-  className = "my-1",
+  className = "",
   avatar,
   text,
 }: Props): ReactElement {

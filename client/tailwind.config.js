@@ -17,8 +17,8 @@ module.exports = {
     extend: {
       colors: {
         "base-400": "#0B090C",
-        "base-content-2":"#828282",
-        "focus":"#fff"
+        "base-content-2": "#828282",
+        focus: "#fff",
       },
       boxShadow: {
         navbar: "0 4px 4px rgba(0,0,0,0.25)",

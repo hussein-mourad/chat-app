@@ -1,38 +1,39 @@
 /* eslint-disable @next/next/no-img-element */
-import { ArrowBackIos, ExpandMore, Search } from "@material-ui/icons";
+import { ArrowBackIos, ExpandMore } from "@material-ui/icons";
 import useAuthentication from "hooks/useAuthentication";
-import React, { ReactElement, useState } from "react";
-import { AutoComplete, AvatarText } from "./index";
-interface Props {}
+import Link from "next/link";
+import { ReactElement, useState } from "react";
+import IRoom from "types/Room";
+import { AvatarText } from "./index";
 
-export default function MainDrawer({}: Props): ReactElement {
+
+interface Props {
+  channel:IRoom
+}
+
+export default function ChannelDrawer({channel}: Props): ReactElement {
   const [value, setValue] = useState("");
   const { user } = useAuthentication();
 
   return (
     <>
       <div className="px-5 navbar shadow-navbar min-h-[55px] sm:min-h-16">
-        <button className="mr-3">
-          <ArrowBackIos />
-        </button>
-        <h1 className="text-lg font-bold">gfkgjf</h1>
+        <Link href="/" passHref>
+          <a className="block mr-3">
+            <ArrowBackIos />
+          </a>
+        </Link>
+        <h1 className="text-lg font-bold">All channels</h1>
       </div>
       <div className="mb-[55px] sm:mb-16 h-full overflow-y-auto scrollbar-hidden p-5">
-        <AutoComplete
-          className="bg-base-200"
-          left={<Search style={{ margin: "10px" }} />}
-          placeholder="Search"
-          options={["a", "ab"]}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
+      <h1 className="mb-5 text-lg font-bold">{channel.name}</h1>
+      <p>{channel.description}</p>
         <div className="mt-8">
-          {/* <AvatarText
-            className="my-2"
-            avatar={<img src="https://picsum.photos/100" alt="" />}
-            text="Hussein"
-          /> */}
-          <AvatarText avatar="H" text="Hussein" />
+          {
+            channel.members.map(member=>(
+              <AvatarText key={member._id} avatar={<img src={member.avatar} alt="avatar"/>} text={member.username} className="my-3" />
+            ))
+          }
         </div>
       </div>
       <div className="absolute bottom-0 left-0 justify-between navbar shadow-navbar-top min-h-[55px] sm:min-h-16 w-full px-5">
@@ -50,3 +51,6 @@ export default function MainDrawer({}: Props): ReactElement {
     </>
   );
 }
+
+//TODO
+//[ ] Change MainDrawer and ChannelDrawer to a Drawer that takes children 

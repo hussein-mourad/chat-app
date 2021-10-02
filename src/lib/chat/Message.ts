@@ -21,7 +21,7 @@ export const messageSchema = new Schema<IMessage>(
     body: {
       type: String,
       trim: true,
-      maxlength: [500, "This message is too long."],
+      maxLength: [500, "This message is too long."],
     },
   },
   { timestamps: true }

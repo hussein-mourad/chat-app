@@ -1,14 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
 import { Add, ExpandMore, Search } from "@material-ui/icons";
+import axios from "axios";
 import useAuthentication from "hooks/useAuthentication";
-import React, { ReactElement, useState } from "react";
+import Link from "next/link";
+import React, { ReactElement, useEffect, useState } from "react";
+import { IRoom } from "../types";
 import { AutoComplete, AvatarText } from "./index";
 interface Props {}
 
 export default function MainDrawer({}: Props): ReactElement {
   const [value, setValue] = useState("");
-  // const { user } = useAuthentication();
-  const user = {avatar:'', username:"", }
+  const { user } = useAuthentication();
+  const [rooms, setRooms] = useState<IRoom[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get("/api/rooms/");
+        console.log(
+          "🚀 ~ file: MainDrawer.tsx ~ line 17 ~ response",
+          response.data
+        );
+        setRooms(response.data);
+      } catch (error) {}
+    })();
+    return () => {};
+  }, []);
 
   return (
     <>
@@ -21,19 +38,29 @@ export default function MainDrawer({}: Props): ReactElement {
       <div className="mb-[55px] sm:mb-16 h-full overflow-y-auto scrollbar-hidden p-5">
         <AutoComplete
           className="bg-base-200"
+          type="search"
           left={<Search style={{ margin: "10px" }} />}
           placeholder="Search"
           options={["a", "ab"]}
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <div className="mt-8">
+        <div className="mt-7">
+          {rooms.map((room: IRoom) => (
+            <Link key={room._id} href={"/rooms/" + room._id} passHref>
+              <a className="block w-full p-1 my-1 hover:bg-base-200/50 rounded-btn">
+                <AvatarText
+                  avatar={room.name[0].toUpperCase()}
+                  text={room.name}
+                />
+              </a>
+            </Link>
+          ))}
           {/* <AvatarText
             className="my-2"
             avatar={<img src="https://picsum.photos/100" alt="" />}
             text="Hussein"
           /> */}
-          <AvatarText avatar="H" text="Hussein" />
         </div>
       </div>
       <div className="absolute bottom-0 left-0 justify-between navbar shadow-navbar-top min-h-[55px] sm:min-h-16 w-full px-5">
@@ -51,10 +78,3 @@ export default function MainDrawer({}: Props): ReactElement {
     </>
   );
 }
-
-// <div className="px-5 navbar shadow-navbar min-h-[55px] sm:min-h-16">
-//         <button className="mr-3">
-//           <ArrowBackIos />
-//         </button>
-//         <h1 className="text-lg font-bold">gfkgjf</h1>
-//       </div>
