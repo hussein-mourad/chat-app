@@ -114,7 +114,7 @@ export default function AuthCard({ authType, url }: Props): ReactElement {
           className="input-bordered bg-base-200"
           type="password"
           id="password"
-          label="Passwod"
+          label="Password"
           placeholder="Enter your password"
           error={
             formik.touched.password && formik.errors.password
