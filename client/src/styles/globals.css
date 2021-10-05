@@ -25,19 +25,6 @@ html, body{
   }
 }
 
-@media only screen and (max-width: 768px) {
-  .sidedrawer-scrollbar {
-    direction: ltr !important;
-  }
-}
-
-.sidedrawer-scrollbar {
-  direction: rtl;
-}
-
-.sidedrawer-scrollbar > div {
-  direction: ltr !important;
-}
 
 ::-webkit-scrollbar {
   @apply w-[6px];
@@ -56,28 +43,12 @@ html, body{
   @apply bg-base-content-2/70;
 }
 
-.sidedrawer-scrollbar::-webkit-scrollbar {
-  @apply float-left w-1;
-}
-
-.sidedrawer-scrollbar::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px hsl(0, 0%, 70%);
-  @apply rounded-lg;
-}
-
-.sidedrawer-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-yellow-500 rounded-lg;
-}
-
-.sidedrawer-scrollbar::-webkit-scrollbar-thumb:hover {
-  @apply bg-yellow-600/80;
-}
 
 button, a{
   @apply focus-visible:ring-2 focus-visible:ring-gray-300 !important;
 }
 
-.input {
+.input,.textarea {
   @apply focus:ring-2 focus:ring-gray-300;
   @apply focus-within:ring-2 focus-within:ring-gray-300;
 }

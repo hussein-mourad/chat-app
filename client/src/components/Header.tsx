@@ -7,7 +7,7 @@ interface Props {
 
 export default function Header({ title }: Props): ReactElement {
   return (
-    <header className="shadow-navbar navbar min-h-[55px] sm:min-h-16 fixed top-0 right-0 bg-base-100 h-[55px] sm:h-16 w-screen lg:w-[calc(100%-320px)]">
+    <header className="shadow-navbar navbar min-h-[55px] sm:min-h-16 fixed top-0 right-0 bg-base-100 h-[55px] sm:h-16 w-screen lg:w-[calc(100%-320px)] z-10">
       <label
         htmlFor="my-drawer-2"
         className="ml-1 mr-3 rounded-full active:bg-base-300/20 lg:hidden"

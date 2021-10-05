@@ -38,21 +38,27 @@ app.use(
   })
 );
 
+
 io.on("connection", (socket) => {
-  socket.on("joined_room", (roomId) => {
+  console.log("user connected ", socket.id);
+  socket.on("join room", (roomId) => {
+    console.log("user joined room ", roomId);
     socket.join(roomId);
   });
-  socket.on("leaved_room", (roomId) => {
+
+  socket.on("leave room", (roomId) => {
+    console.log("user leaved room ", roomId);
     socket.leave(roomId);
   });
 
-  console.log(socket.id);
+  socket.on("room added", (room) => {
+    console.log("room added");
+    socket.emit(room);
+  });
 
-  socket.emit("message", "Hello and Welcome");
-
-  socket.on("send_message", (data) => {
-    console.log("🚀 ~ file: server.ts ~ line 45 ~ socket.on ~ data", data);
-    socket.emit("message", "message");
+  socket.on("message", (data) => {
+    console.log("messages received");
+    io.to(data?.room).emit("message", data?.message);
   });
 });
 

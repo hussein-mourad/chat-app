@@ -27,7 +27,7 @@ export default function Message({className='',message}: Props): ReactElement {
   }
 
   return (
-    <div className={`${className} flex w-full rounded-box`}>
+    <div className={`${className} flex`}>
       <div className="mr-5 avatar">
         <div className="mt-1 w-11 h-11 rounded-btn">
           <img src={message.sender.avatar} alt="" />

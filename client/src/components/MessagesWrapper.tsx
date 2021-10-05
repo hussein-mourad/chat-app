@@ -1,51 +1,66 @@
-import { findIndex } from "lodash";
-import React, { Fragment, ReactElement, useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import {useArray, useAuthentication} from "../hooks";
+import React, {
+  Fragment,
+  ReactElement,
+  useContext,
+  useEffect,
+  useRef,
+} from "react";
+import { SocketContext } from "src/providers/SocketProvider";
 import IMessage from "types/Message";
 import Message from "./Message";
+import cn from "classnames"
 
 interface Props {
   messages: IMessage[];
 }
 
-export default function MessagesWrapper({ messages }: Props): ReactElement {
-  const [groups, setGroups] = useState<any[]>([]);
+interface IGroup {
+  date: string;
+  messages: IMessage[];
+}
+
+export default function MessagesWrapper({
+  messages: originalMessages,
+}: Props): ReactElement {
+  const socket = useContext(SocketContext);
+  const { array: groups, set: setGroups } = useArray<IGroup>([]);
+  const { array: messages, push: pushMessage } =
+    useArray<IMessage>(originalMessages);
+  const ref = useRef<HTMLDivElement>(null);
+  const {user,isLoading}  = useAuthentication();
 
   useEffect(() => {
-    const flapMap = messages.flatMap((message) => {
-      return message.createdAt;
-    });
-    console.log(
-      "🚀 ~ file: MessagesWrapper.tsx ~ line 15 ~ useEffect ~ flapMap",
-      flapMap
-    );
-    
+    socket.on("message", (message: IMessage) => {
+      console.log("message received");
+      pushMessage(message);
 
-    let tmp: any = [];
+      setTimeout(() => {
+        ref.current && ref.current.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    });
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    let tmp: any = {};
     messages.forEach((message: IMessage) => {
-      let index = findIndex(tmp, (obj: any) => {
-        let tmpDate = new Date(obj.date);
-        let messageDate = new Date(obj.date);
-        return (
-          tmpDate.getDate() === messageDate.getDate() &&
-          tmpDate.getMonth() === messageDate.getMonth() &&
-          tmpDate.getFullYear() === messageDate.getFullYear()
-        );
-      });
-      console.log(
-        "🚀 ~ file: MessagesWrapper.tsx ~ line 25 ~ index ~ index",
-        index
-      );
-
-      if (index == -1) {
-        tmp.push({ date: message.createdAt, messages: [message] });
-      } else {
-        tmp[index].messages.push(message);
-      }
+      let date = message.createdAt.split("T")[0];
+      if (date in tmp) tmp[date].push(message);
+      else tmp[date] = [message];
     });
-    console.log(
-      "🚀 ~ file: MessagesWrapper.tsx ~ line 15 ~ useEffect ~ tmp",
-      tmp
-    );
+
+    tmp = Object.keys(tmp).map((date) => {
+      return {
+        date,
+        messages: tmp[date],
+      };
+    });
+    setTimeout(() => {
+      ref.current && ref.current.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+
     setGroups(tmp);
     return () => {};
   }, [messages]);
@@ -64,18 +79,27 @@ export default function MessagesWrapper({ messages }: Props): ReactElement {
       {groups.map((group) => (
         <Fragment key={group.date}>
           <div
-            className="my-0 after:h-px before:h-px before:bg-base-content-2 after:bg-base-content-2 divider text-base-content-2"
+            className="y-0 after:h-px before:h-px before:bg-base-content-2 after:bg-base-content-2 divider text-base-content-2"
             key={group.date}
           >
             {formatDate(group.date)}
           </div>
           <div>
-            {group.messages.map((message: IMessage) => (
-              <Message message={message} key={message._id} className="my-5" />
-            ))}
+            {group.messages.map((message: IMessage) => {
+              const style = cn("my-5", {"justify-end": message.sender._id===user?.id})
+              
+              return (
+                <Message
+                  message={message}
+                  key={message._id}
+                  className={style}
+                />
+              );
+            })}
           </div>
         </Fragment>
       ))}
+      <div ref={ref}></div>
     </div>
   );
 }

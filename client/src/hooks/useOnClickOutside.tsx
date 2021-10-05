@@ -1,5 +1,5 @@
 import { RefObject, useEffect } from 'react'
-
+// https://usehooks-typescript.com/react-hook/use-on-click-outside
 type AnyEvent = MouseEvent | TouchEvent
 
 export default function useOnClickOutside<T extends HTMLElement = HTMLElement>(

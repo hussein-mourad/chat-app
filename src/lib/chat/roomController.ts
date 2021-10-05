@@ -24,12 +24,22 @@ export async function createRoom(req: Request, res: Response) {
 export async function getRoom(req: Request, res: Response) {
   const user = res.locals.user;
 
+  console.log(
+    "🚀 ~ file: roomController.ts ~ line 27 ~ getRoom ~ req.params.id",
+    req.params.id
+  );
+  if (!req.params.id) return res.status(401).json("Room not found.");
+
   try {
     Room.findOne({ _id: req.params.id })
-      .populate("members", "username currentRoom avatar")
+      .populate("members", "username avatar")
       .populate("messages")
       .exec((err, doc) => {
-        if (err) throw new Error("error");
+        if (err)
+          console.log(
+            "🚀 ~ file: roomController.ts ~ line 33 ~ .exec ~ err",
+            err
+          );
         User.populate(
           doc,
           {
@@ -50,10 +60,14 @@ export async function findAllRooms(req: Request, res: Response) {
   const user = res.locals.user;
   try {
     Room.find({})
-      .populate("members", "username currentRoom avatar")
+      .populate("members", "username avatar")
       .populate("messages")
       .exec((err, docs) => {
-        if (err) throw new Error("error");
+        if (err)
+          console.log(
+            "🚀 ~ file: roomController.ts ~ line 57 ~ .exec ~ err",
+            err
+          );
         User.populate(
           docs,
           {
@@ -71,10 +85,7 @@ export async function findAllRooms(req: Request, res: Response) {
 
 export async function updateRoom(req: Request, res: Response) {
   const userId = res.locals.user._id;
-  console.log(
-    "🚀 ~ file: roomController.ts ~ line 50 ~ updateRoom ~ userId",
-    userId
-  );
+
   const roomId = req.params.id;
   const { message } = req.body;
   try {

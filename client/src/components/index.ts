@@ -8,3 +8,5 @@ export { default as MainDrawer } from "./MainDrawer";
 export { default as MainLayout } from "./MainLayout";
 export { default as Message } from "./Message";
 export { default as MessagesWrapper } from "./MessagesWrapper";
+export {default as NewChannelModal} from "./NewChannelModal"
+export {default as DropDownMenu} from "./DropDownMenu"

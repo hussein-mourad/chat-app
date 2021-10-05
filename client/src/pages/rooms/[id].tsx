@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import useAuthentication from "hooks/useAuthentication";
 import useFetch from "hooks/useFetch";
 import { useRouter } from "next/router";
@@ -9,21 +10,21 @@ import { LoadingScreen, MainLayout, MessagesWrapper } from "../../components";
 interface Props {}
 
 export default function Room({}: Props): ReactElement {
-  const router = useRouter();
+  const roomId = useRouter().query.id;
+  console.log("🚀 ~ file: [id].tsx ~ line 14 ~ Room ~ roomId", roomId)
   const socket = useContext(SocketContext);
   const { isLoading, user } = useAuthentication();
-  const { data: room, error } = useFetch<IRoom>(
-    "/api/rooms/" + router.query.id
-  );
-
-  
+  let url;
+  if(roomId) url ="/api/rooms/" + roomId;
+  const { data: room, error } = useFetch<IRoom>(url);
 
   useEffect(() => {
     socket.connect();
+    socket.emit("join room", roomId);
     return () => {
-      
-    }
-  }, [socket])
+      socket.emit("leave room", roomId);
+    };
+  }, []);
 
   if (error) return <div>error TODO</div>;
   if (!room || isLoading) return <LoadingScreen />;

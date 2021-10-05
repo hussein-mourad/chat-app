@@ -1,29 +1,39 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-import { Add, ExpandMore, Search } from "@material-ui/icons";
+import { Add, Search } from "@material-ui/icons";
 import axios from "axios";
-import useAuthentication from "hooks/useAuthentication";
 import Link from "next/link";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
+import { SocketContext } from "src/providers/SocketProvider";
+import { AutoComplete, AvatarText, DropDownMenu } from ".";
+import { useArray, useAuthentication } from "../hooks";
 import { IRoom } from "../types";
-import { AutoComplete, AvatarText } from "./index";
-interface Props {}
 
-export default function MainDrawer({}: Props): ReactElement {
-  const [value, setValue] = useState("");
+interface Props {
+  toggleModal: () => void;
+}
+
+export default function MainDrawer({ toggleModal }: Props): ReactElement {
+  const [searchKey, setSearchKey] = useState("");
+
   const { user } = useAuthentication();
-  const [rooms, setRooms] = useState<IRoom[]>([]);
+  const { array: rooms, set: setRooms, push: pushRoom } = useArray<IRoom>([]);
+  const socket = useContext(SocketContext);
 
   useEffect(() => {
     (async () => {
       try {
         const response = await axios.get("/api/rooms/");
-        console.log(
-          "🚀 ~ file: MainDrawer.tsx ~ line 17 ~ response",
-          response.data
-        );
         setRooms(response.data);
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     })();
+
+    socket.connect();
+    socket.on("room added", (room) => {
+      pushRoom(room);
+    });
     return () => {};
   }, []);
 
@@ -31,7 +41,10 @@ export default function MainDrawer({}: Props): ReactElement {
     <>
       <div className="justify-between navbar shadow-navbar min-h-[55px] sm:min-h-16 w-full px-5">
         <h1 className="text-lg font-bold">Channels</h1>
-        <button className="btn btn-sm btn-secondary btn-square ">
+        <button
+          className="btn btn-sm btn-secondary btn-square "
+          onClick={toggleModal}
+        >
           <Add />
         </button>
       </div>
@@ -41,26 +54,23 @@ export default function MainDrawer({}: Props): ReactElement {
           type="search"
           left={<Search style={{ margin: "10px" }} />}
           placeholder="Search"
-          options={["a", "ab"]}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
+          options={rooms.flatMap((room) => room.name)}
+          value={searchKey}
+          onChange={(e) => setSearchKey(e.target.value)}
         />
         <div className="mt-7">
-          {rooms.map((room: IRoom) => (
-            <Link key={room._id} href={"/rooms/" + room._id} passHref>
-              <a className="block w-full p-1 my-1 hover:bg-base-200/50 rounded-btn">
-                <AvatarText
-                  avatar={room.name[0].toUpperCase()}
-                  text={room.name}
-                />
-              </a>
-            </Link>
-          ))}
-          {/* <AvatarText
-            className="my-2"
-            avatar={<img src="https://picsum.photos/100" alt="" />}
-            text="Hussein"
-          /> */}
+          {rooms
+            .filter((room) => room.name.includes(searchKey))
+            .map((room: IRoom) => (
+              <Link key={room._id} href={"/rooms/" + room._id} passHref>
+                <a className="block w-full p-1 my-1 hover:bg-base-200/50 rounded-btn">
+                  <AvatarText
+                    avatar={room.name[0].toUpperCase()}
+                    text={room.name}
+                  />
+                </a>
+              </Link>
+            ))}
         </div>
       </div>
       <div className="absolute bottom-0 left-0 justify-between navbar shadow-navbar-top min-h-[55px] sm:min-h-16 w-full px-5">
@@ -71,9 +81,7 @@ export default function MainDrawer({}: Props): ReactElement {
         </div>
 
         <h1 className="text-lg font-bold">{user?.username}</h1>
-        <button>
-          <ExpandMore />
-        </button>
+        <DropDownMenu />
       </div>
     </>
   );

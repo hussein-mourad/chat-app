@@ -1,14 +1,15 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import React from "react";
 import SocketProvider from "src/providers/SocketProvider";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SocketProvider>
-      <Head>
+     <Head>
         <title>Chat</title>
-      </Head>
+      </Head> 
       <Component {...pageProps} />
     </SocketProvider>
   );

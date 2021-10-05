@@ -7,12 +7,10 @@ const TEN_DAYS_IN_MILLISECONDS = TEN_DAYS_IN_SECONDS * 1000;
 
 async function isAuth(req: Request, res: Response) {
   let user = res.locals.user;
-  user = await User.findOne({_id:user._id}).populate("currentRoom").exec();
   res.json({
     id: user._id,
     username: user.username,
     avatar: user.avatar,
-    currentRoom: user.currentRoom,
   });
 }
 
@@ -33,7 +31,6 @@ async function login(req: Request, res: Response) {
       id: user._id,
       username: user.username,
       avatar: user.avatar,
-      currentRoom: user.currentRoom,
     });
   } catch (err: any) {
     res.status(401).json(handleErrors(err));
@@ -60,7 +57,6 @@ async function signup(req: Request, res: Response) {
       id: user._id,
       username: user.username,
       avatar: user.avatar,
-      currentRoom: user.currentRoom,
     });
   } catch (err: any) {
     console.error(err);
@@ -68,18 +64,6 @@ async function signup(req: Request, res: Response) {
   }
 }
 
-
-async function updateCurrentRoom(req: Request, res: Response) {
-  try {
-    let result = await User.updateOne(
-      { _id: res.locals.user._id.toString() },
-      { currentRoom: req.body.currentRoom }
-    );
-    res.json("updated successfully")
-  } catch (error: any) {
-    console.log(error);
-  }
-}
 
 
 function logout(req: Request, res: Response) {
@@ -120,5 +104,4 @@ export default {
   login,
   logout,
   signup,
-  updateCurrentRoom
 };

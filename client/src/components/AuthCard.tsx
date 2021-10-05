@@ -146,7 +146,6 @@ export default function AuthCard({ authType, url }: Props): ReactElement {
           <button
             className="btn-block btn btn-primary"
             type="submit"
-            onClick={() => {}}
           >
             {authType}
           </button>

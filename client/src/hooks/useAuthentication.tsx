@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import axios from "axios";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 interface IUser {
-  _id: string;
+  id: string;
   username: string;
-  currentRoom:string;
-  avatar:string
+  currentRoom: string;
+  avatar: string;
 }
 
 export default function useAuthentication() {
@@ -26,7 +26,7 @@ export default function useAuthentication() {
     })();
 
     return () => {};
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return { user, isLoading };

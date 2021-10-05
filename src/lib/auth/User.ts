@@ -7,7 +7,6 @@ export interface IUser {
   avatar: string;
   username: string;
   password: string;
-  currentRoom: PopulatedDoc<IRoom & Document>;
 }
 
 export interface UserModel extends Model<IUser> {
@@ -36,11 +35,6 @@ export const userSchema = new Schema<IUser, UserModel, IUser>(
         (str: string) => isStrongPassword(str, { minSymbols: 0 }),
         "Password must contain at least one uppercase, one lowercase, and one number",
       ],
-    },
-    currentRoom: {
-      type: Schema.Types.ObjectId,
-      ref: "Room",
-      default: null,
     },
   },
   { timestamps: true }
