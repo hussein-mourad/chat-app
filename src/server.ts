@@ -10,13 +10,14 @@ import { Server } from "socket.io";
 import connectDB from "./config/db";
 import { authRouter } from "./lib/auth";
 import { messageRouter, roomRouter } from "./lib/chat";
+import { userRouter } from "./lib/user";
 
 dotenv.config();
 
 const app: Application = express();
 const server = http.createServer(app);
 const io = new Server(server);
-let port = process.env.PORT || 8000;
+let port = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 
@@ -37,7 +38,6 @@ app.use(
     }),
   })
 );
-
 
 io.on("connection", (socket) => {
   console.log("user connected ", socket.id);
@@ -63,12 +63,13 @@ io.on("connection", (socket) => {
 });
 
 app.get("/", (req: any, res: any) => {
-  res.send("Welcome");
+  res.json({ status: "running" });
 });
 
 app.use("/api/auth/", authRouter);
 app.use("/api/messages/", messageRouter);
 app.use("/api/rooms/", roomRouter);
+app.use("/api/user", userRouter);
 
 connectDB(() => {
   server.listen(port);

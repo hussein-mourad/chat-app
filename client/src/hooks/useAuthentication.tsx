@@ -1,13 +1,8 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import IUser from "types/User";
 
-interface IUser {
-  id: string;
-  username: string;
-  currentRoom: string;
-  avatar: string;
-}
 
 export default function useAuthentication() {
   const [isLoading, setIsLoading] = useState(true);

@@ -29,7 +29,7 @@ export default function MessagesWrapper({
   const { array: messages, push: pushMessage } =
     useArray<IMessage>(originalMessages);
   const ref = useRef<HTMLDivElement>(null);
-  const {user,isLoading}  = useAuthentication();
+  const {user}  = useAuthentication();
 
   useEffect(() => {
     socket.on("message", (message: IMessage) => {
@@ -86,7 +86,7 @@ export default function MessagesWrapper({
           </div>
           <div>
             {group.messages.map((message: IMessage) => {
-              const style = cn("my-5", {"justify-end": message.sender._id===user?.id})
+              const style = cn("my-5", {"justify-end": message.sender._id===user?._id})
               
               return (
                 <Message

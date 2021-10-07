@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import useAuthentication from "hooks/useAuthentication";
 import type { NextPage } from "next";
-import { ReactElement, useContext, useEffect, useState } from "react";
+import { ReactElement } from "react";
 import { LoadingScreen, MainLayout } from "../components";
-import { SocketContext } from "../providers/SocketProvider";
 
 const Home: NextPage = (): ReactElement => {
   const { isLoading } = useAuthentication();

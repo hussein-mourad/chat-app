@@ -1,7 +1,6 @@
 import { compare, genSalt, hash } from "bcrypt";
-import { Document, Model, model, PopulatedDoc, Schema } from "mongoose";
+import { Document, Model, model, Schema } from "mongoose";
 import isStrongPassword from "validator/lib/isStrongPassword";
-import { IRoom } from "../chat/Room";
 
 export interface IUser {
   avatar: string;
@@ -14,7 +13,7 @@ export interface UserModel extends Model<IUser> {
   isValidUser(_id: string): IUser & Document<any, any, IUser>;
 }
 
-export const userSchema = new Schema<IUser, UserModel, IUser>(
+export const userSchema = new Schema<IUser, UserModel>(
   {
     avatar: {
       type: String,

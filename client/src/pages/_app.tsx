@@ -7,9 +7,10 @@ import "../styles/globals.css";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SocketProvider>
-     <Head>
+      <Head>
         <title>Chat</title>
-      </Head> 
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+      </Head>
       <Component {...pageProps} />
     </SocketProvider>
   );

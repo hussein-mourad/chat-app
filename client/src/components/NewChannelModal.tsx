@@ -66,12 +66,13 @@ export default function NewChannelModal({
   });
   return (
     <div className={`shadow-md card bg-base-300  ${className}`} ref={ref}>
-      <form className="pb-3 card-body" onSubmit={formik.handleSubmit}>
+      <form className="pb-3 card-body" onSubmit={formik.handleSubmit} autoComplete="off">
         <h2 className="mb-3 text-lg card-title text-bold md:mb-5">
           New Channel
         </h2>
         <div className="space-y-3 md:space-y-5">
           <InputField
+            type="text"
             placeholder="Channel name"
             id="name"
             error={

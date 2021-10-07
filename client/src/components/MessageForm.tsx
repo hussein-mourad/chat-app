@@ -57,8 +57,10 @@ export default function MessageForm({ room }: Props): ReactElement {
     <form
       className="fixed bottom-0 right-0 flex items-center justify-center w-screen lg:w-[calc(100%-320px)] h-20 px-3 sm:px-10 bg-base-100"
       onSubmit={formik.handleSubmit}
+      autoComplete="off"
     >
       <InputField
+        type="text"
         placeholder="Type a message here"
         className="bg-base-200"
         right={
