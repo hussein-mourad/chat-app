@@ -33,7 +33,6 @@ export default function MessagesWrapper({
 
   useEffect(() => {
     socket.on("message", (message: IMessage) => {
-      console.log("message received");
       pushMessage(message);
 
       setTimeout(() => {

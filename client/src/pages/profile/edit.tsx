@@ -12,7 +12,7 @@ export default function Edit() {
 
   if (!user) return <LoadingScreen />;
   return (
-    <>
+    <div className="container mx-auto">
       <Head>
         <title>Auth app | Edit</title>
 
@@ -30,9 +30,9 @@ export default function Edit() {
             <ChevronLeftIcon className="mr-1" /> Back
           </button>
         </Link>
-        <ProfileEdit user={user}  />
+        <ProfileEdit user={user} />
         <Footer className="flex mt-2" />
       </div>
-    </>
+    </div>
   );
 }

@@ -11,7 +11,6 @@ interface Props {}
 
 export default function Room({}: Props): ReactElement {
   const roomId = useRouter().query.id;
-  console.log("🚀 ~ file: [id].tsx ~ line 14 ~ Room ~ roomId", roomId)
   const socket = useContext(SocketContext);
   const { isLoading, user } = useAuthentication();
   let url;

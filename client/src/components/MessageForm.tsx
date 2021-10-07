@@ -36,7 +36,6 @@ export default function MessageForm({ room }: Props): ReactElement {
     onSubmit: async (values: FormValues, actions) => {
       actions.setSubmitting(false);
       socket.connect();
-      console.log("send message");
       try {
         const response = await axios.post("/api/messages/", {
           body: values.message,
@@ -45,10 +44,7 @@ export default function MessageForm({ room }: Props): ReactElement {
         socket.emit("message", { room: room?._id, message: response.data });
         actions.resetForm();
       } catch (error) {
-        console.log(
-          "🚀 ~ file: MessageForm.tsx ~ line 27 ~ sendMessage ~ error",
-          error
-        );
+        console.log(error);
       }
     },
   });

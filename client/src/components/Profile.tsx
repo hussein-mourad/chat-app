@@ -36,7 +36,7 @@ export default function Profile({ user }: Props) {
         </div>
 
         <Link href="/profile/edit" passHref>
-          <button className="px-5 py-2 btn btn-outline ">Edit</button>
+          <button className="px-4 btn-sm btn btn-outline">Edit</button>
         </Link>
       </div>
 

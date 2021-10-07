@@ -82,7 +82,7 @@ export default function ProfileEdit({ user: userProp }: Props) {
         <small className="block text-sm text-green-500 text-semibold">
           {message}
         </small>
-        <button className="btn btn-primary" type="submit">
+        <button className="px-5 btn btn-primary" type="submit">
           Save
         </button>
       </form>
