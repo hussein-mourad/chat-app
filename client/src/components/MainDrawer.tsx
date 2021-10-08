@@ -23,7 +23,7 @@ export default function MainDrawer({ toggleModal }: Props): ReactElement {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get("/api/rooms/");
+        const response = await axios.get(process.env.BACKEND_URL+"/api/rooms/");
         setRooms(response.data);
       } catch (error) {
         console.log(error);

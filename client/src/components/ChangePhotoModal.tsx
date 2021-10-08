@@ -127,7 +127,7 @@ function ChangePhotoModal({ user, setUser, stateHandler }: Props) {
     xhr.responseType = "json";
     var formData = new FormData();
     formData.append("image", file);
-    xhr.open("PUT", `/api/user/avatar/`, true);
+    xhr.open("PUT", process.env.BACKEND_URL+`/api/user/avatar/`, true);
     // Add following event listener
     xhr.upload.addEventListener("progress", function (e) {
       setProgressValue((e.loaded / e.total) * 100 || 0);

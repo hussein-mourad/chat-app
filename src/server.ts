@@ -1,5 +1,6 @@
 import MongoStore from "connect-mongo";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 import express, { Application } from "express";
 import session from "express-session";
@@ -26,6 +27,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIES_SECRET));
 app.use(express.static(path.join(__dirname, "../public")));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    optionsSuccessStatus: 200,
+  })
+);
 
 app.use(
   session({
@@ -57,7 +64,7 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get("/", (req: any, res: any) => {
+app.get("/status", (req: any, res: any) => {
   res.json({ status: "running" });
 });
 

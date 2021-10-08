@@ -12,7 +12,7 @@ export default function useAuthentication() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.post("/api/auth/");
+        const response = await axios.post(process.env.BACKEND_URL+"/api/auth/");
         setUser(response.data);
         setIsLoading(false);
       } catch (err) {

@@ -54,7 +54,7 @@ export default function NewChannelModal({
     onSubmit: async (values: FormValues, actions) => {
       actions.setSubmitting(false);
       try {
-        const response = await axios.post("/api/rooms", values);
+        const response = await axios.post(process.env.BACKEND_URL+"/api/rooms", values);
         socket.emit("room added", response.data);
         closeHandler();
       } catch (err: any) {

@@ -14,7 +14,7 @@ export async function updateUserData(req: Request, res: Response) {
   let { removePicture } = req.query;
   if (removePicture === "true") {
     fs.unlink(
-      path.join(UPLOAD_PATH, user.avatar.replace("/api/user/avatar/", "")),
+      path.join(UPLOAD_PATH, user.avatar.replace(process.env.BACKEND_URL+"/api/user/avatar/", "")),
       (err) => {}
     );
     let avatar = `https://eu.ui-avatars.com/api/?name=${
@@ -37,7 +37,7 @@ export async function updateUserData(req: Request, res: Response) {
       { runValidators: true }
     );
 
-    if (!user.avatar.includes("/api/user/avatar/")) {
+    if (!user.avatar.includes(process.env.BACKEND_URL+"/api/user/avatar/")) {
       let avatar = `https://eu.ui-avatars.com/api/?name=${
         username[0] + username[1]
       }`;
@@ -49,7 +49,7 @@ export async function updateUserData(req: Request, res: Response) {
     }
 
     res.status(201).json("Updated successfully");
-  } catch (error) {
+  } catch (error: any) {
     let errors: any = {};
     if (error.code == 11000) {
       errors.message = "Username is already taken.";
@@ -75,15 +75,16 @@ export function uploadPhoto(req: Request, res: Response) {
 
   form.on("error", (err) => console.error(err.message));
 
-  form.parse(req, async function (err, fields, files) {
+  form.parse(req, async function (err, fields, files: any) {
     try {
       if (!files || !files.image) throw new Error("No files received!");
       const allowedExtensions = ["jpg", "png", "jpeg"];
       const filePath = path.join(
-        "/api/user/avatar/",
+        process.env.BACKEND_URL+"/api/user/avatar/",
         files.image[0].path.replace(UPLOAD_PATH, "")
       );
 
+      // @ts-ignore
       const fileExtension = filePath
         .split(".")
         [filePath.split(".").length - 1].toLowerCase();
@@ -105,6 +106,6 @@ export function uploadPhoto(req: Request, res: Response) {
 }
 
 export async function getImage(req: Request, res: Response) {
-  const filePath = path.join(UPLOAD_PATH, req.params.filename);
+  const filePath = path.join(UPLOAD_PATH, req.params.filename as string);
   res.sendFile(filePath);
 }
