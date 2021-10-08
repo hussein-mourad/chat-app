@@ -6,13 +6,15 @@ import ProfileEdit from "components/ProfileEdit";
 import useAuthentication from "hooks/useAuthentication";
 import Head from "next/head";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Edit() {
-  const { user} = useAuthentication();
+  const { user: serverUser } = useAuthentication();
+  const [user, setUser] = useState(serverUser);
 
-  if (!user) return <LoadingScreen />;
+  if (!serverUser) return <LoadingScreen />;
   return (
-    <div className="container mx-auto">
+    <div className="container p-3 mx-auto md:p-5">
       <Head>
         <title>Auth app | Edit</title>
 
@@ -23,14 +25,14 @@ export default function Edit() {
    style-src  'self' 'unsafe-inline' *"
         />
       </Head>
-      <NavBar user={user} />
+      <NavBar user={user || serverUser} />
       <div className="flex flex-col max-w-3xl mx-auto mt-8">
         <Link href="/" passHref>
           <button className="flex items-center text-base text-blue-400 focus:outline-none">
             <ChevronLeftIcon className="mr-1" /> Back
           </button>
         </Link>
-        <ProfileEdit user={user} />
+        <ProfileEdit user={user || serverUser} setUser={setUser} />
         <Footer className="flex mt-2" />
       </div>
     </div>

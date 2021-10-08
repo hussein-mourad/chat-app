@@ -8,7 +8,7 @@ const TEN_DAYS_IN_MILLISECONDS = TEN_DAYS_IN_SECONDS * 1000;
 async function isAuth(req: Request, res: Response) {
   let user = res.locals.user;
   res.json({
-    id: user._id,
+    _id: user._id,
     username: user.username,
     avatar: user.avatar,
   });
@@ -28,7 +28,7 @@ async function login(req: Request, res: Response) {
     });
 
     res.status(201).json({
-      id: user._id,
+      _id: user._id,
       username: user.username,
       avatar: user.avatar,
     });
@@ -54,7 +54,7 @@ async function signup(req: Request, res: Response) {
     });
 
     res.status(201).json({
-      id: user._id,
+      _id: user._id,
       username: user.username,
       avatar: user.avatar,
     });

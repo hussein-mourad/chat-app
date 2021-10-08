@@ -1,21 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
-import {Close as CloseIcon} from "@material-ui/icons";
+import { Close as CloseIcon } from "@material-ui/icons";
+import useOnClickOutside from "hooks/useOnClickOutside";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import IUser from "types/User";
 
 interface Props {
-  user:IUser
-  setUser:(user:IUser)=>void
-  stateHandler:()=>void;
+  user: IUser;
+  setUser: (user: IUser) => void;
+  stateHandler: () => void;
 }
 
-function ChangePhotoModal({ user, setUser, stateHandler }:Props) {
+function ChangePhotoModal({ user, setUser, stateHandler }: Props) {
   const imgRef = useRef<any>(null);
   const inputRef = useRef<any>(null);
+  const modalRef = useRef<any>(null);
   const [srcImg, setSrcImg] = useState<string | undefined>("");
-  const [crop, setCrop] = useState({
+  const [crop, setCrop] = useState<any>({
     unit: "px",
     aspect: 1 / 1,
     x: 10,
@@ -27,6 +29,8 @@ function ChangePhotoModal({ user, setUser, stateHandler }:Props) {
   const [error, setError] = useState(null);
   const [progressValue, setProgressValue] = useState(0);
 
+  useOnClickOutside(modalRef, stateHandler);
+
   useEffect(() => {
     let img = document.createElement("img");
     img.src = user.avatar;
@@ -34,20 +38,11 @@ function ChangePhotoModal({ user, setUser, stateHandler }:Props) {
       var base64Img = getBase64Image(img);
       setSrcImg(base64Img);
     } catch (err) {
-      // console.error(err);
+      console.error(err);
     }
-  }, []);
+  }, [user.avatar]);
 
-  // useEffect(() => {
-  //   document.body.style.height = "100%";
-  //   document.body.style.overflow = "hidden";
-  //   return () => {
-  //     document.body.style.height = "auto";
-  //     document.body.style.overflow = "auto";
-  //   };
-  // }, []);
-
-  function getBase64Image(img:any) {
+  function getBase64Image(img: any) {
     if (!img) return;
     var canvas = document.createElement("canvas");
     canvas.width = img.width;
@@ -65,7 +60,7 @@ function ChangePhotoModal({ user, setUser, stateHandler }:Props) {
    * @param {String} fileName - Name of the returned file in Promise
    * @param {Boolean} base64 - Return base64 version of the image
    */
-  function getCroppedImg(image:any, crop:any, fileName:any, base64:any) {
+  function getCroppedImg(image: any, crop: any, fileName: string, base64: any) {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
@@ -77,7 +72,7 @@ function ChangePhotoModal({ user, setUser, stateHandler }:Props) {
     canvas.height = crop.height * pixelRatio;
 
     ctx?.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    ctx&&(ctx.imageSmoothingQuality = "high");
+    ctx && (ctx.imageSmoothingQuality = "high");
 
     ctx?.drawImage(
       image,
@@ -96,7 +91,7 @@ function ChangePhotoModal({ user, setUser, stateHandler }:Props) {
     // As a blob
     return new Promise((resolve, reject) => {
       canvas.toBlob(
-        (blob:any) => {
+        (blob: any) => {
           blob.name = fileName;
           blob.lastModifiedDate = new Date();
           resolve(blob);
@@ -107,10 +102,10 @@ function ChangePhotoModal({ user, setUser, stateHandler }:Props) {
     });
   }
 
-  const onSelectFile = (e:any) => {
+  const onSelectFile = (e: any) => {
     if (e.target.files && e.target.files.length > 0) {
-      const reader:any = new FileReader();
-      reader.addEventListener("progress", (e:any) => {
+      const reader: any = new FileReader();
+      reader.addEventListener("progress", (e: any) => {
         setProgressValue((e.loaded / e.total) * 100 || 0);
       });
       reader.addEventListener("load", () => {
@@ -120,35 +115,32 @@ function ChangePhotoModal({ user, setUser, stateHandler }:Props) {
     }
   };
 
-  const saveImage = async (completedCrop:any) => {
+  const saveImage = async (completedCrop: any) => {
     const blob:any = await getCroppedImg(
       imgRef.current,
       completedCrop,
       "croppedImage.jpeg",
       false
     );
-    
     let file = new File([blob], blob.name);
-
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
     var formData = new FormData();
     formData.append("image", file);
-    xhr.open("POST", `/user/upload/${user._id}`, true);
-
+    xhr.open("PUT", `/api/user/avatar/`, true);
     // Add following event listener
     xhr.upload.addEventListener("progress", function (e) {
       setProgressValue((e.loaded / e.total) * 100 || 0);
     });
-
     xhr.addEventListener("readystatechange", function (e:any) {
       if (xhr.readyState == 4 && xhr.status == 200) {
-        setUser((user: IUser) => {
-          return { ...user, avatar: xhr.response.filePath as string };
-        });
+        setUser(
+          { ...user, avatar: xhr.response.filePath as string }
+        );
         stateHandler();
       } else if (xhr.readyState == 4 && xhr.status != 200) {
-        setError(e.currentTarget.response.substring(0,20));
+        console.log(e);  
+        // setError(e.currentTarget.response.substring(0,20));
       }
     });
     xhr.send(formData);
@@ -164,21 +156,17 @@ function ChangePhotoModal({ user, setUser, stateHandler }:Props) {
 
   return (
     <form
-      className="fixed top-0 left-0 z-50
-    w-screen h-full md:h-screen 
-       bg-white dark:bg-[#333]
-       md:bg-black md:bg-opacity-20
-overflow-scroll
-       "
+      className="fixed top-0 left-0 z-50 w-screen h-full overflow-auto md:h-screen bg-black/30"
       onSubmit={(e) => e.preventDefault()}
       encType="multipart/form-data"
     >
-      <div className="flex justify-center">
+      <div className="flex justify-center ">
         <div
-          className="mt-5 mx-auto md:border border-gray-400 bg-white md:rounded-lg p-3  
-        h-full md:h-auto  md:max-w-[80vw] dark:bg-[#333]"
+          className="mt-5 mx-auto md:border border-gray-500 bg-base-100 shadow-md md:rounded-lg p-3  
+        h-full md:h-auto  md:max-w-[80vw] "
+          ref={modalRef}
         >
-          <div className="flex justify-between">
+          <div className="flex justify-between ">
             <h3 className="mr-8 text-lg">Upload your photo ( Maximum 10mb )</h3>
             <button className="p-1" onClick={stateHandler}>
               <CloseIcon fontSize="small" />
@@ -215,6 +203,7 @@ overflow-scroll
               ></div>
             </div>
           )}
+
           <div className="flex justify-center mt-5">
             <input
               className="hidden"
@@ -232,6 +221,7 @@ overflow-scroll
               Upload a photo
             </button>
 
+            
             <button
               type="button"
               className="px-3 py-2 my-2 ml-2 text-sm font-medium text-white bg-blue-500 rounded-lg active:bg-blue-600 focus:ring focus:ring-blue-300 dark:focus:ring-blue-400"
@@ -240,7 +230,9 @@ overflow-scroll
             >
               Save
             </button>
-            <small className="block text-red-500 dark:text-red-400">{error}</small>
+            <small className="block text-red-500 dark:text-red-400">
+              {error}
+            </small>
           </div>
         </div>
       </div>

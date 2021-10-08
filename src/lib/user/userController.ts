@@ -11,6 +11,21 @@ export async function updateUserData(req: Request, res: Response) {
 
   let { username } = req.body;
 
+  let { removePicture } = req.query;
+  if (removePicture === "true") {
+    let avatar = `https://eu.ui-avatars.com/api/?name=${
+      user.username[0] + user.username[1]
+    }`;
+    try {
+      await User.findByIdAndUpdate(
+        user._id,
+        { avatar },
+        { runValidators: true }
+      );
+    } catch (error) {}
+    return res.json({ avatar });
+  }
+
   try {
     await User.findByIdAndUpdate(
       user._id,
@@ -60,7 +75,7 @@ export function uploadPhoto(req: Request, res: Response) {
   form.parse(req, async function (err, fields, files) {
     console.error(files);
     try {
-      if (!files || !files.image) throw new Error("No files recieved!");
+      if (!files || !files.image) throw new Error("No files received!");
       const allowedExtensions = ["jpg", "png", "jpeg"];
       const filePath = path.join(
         "/api/user/avatar/",
