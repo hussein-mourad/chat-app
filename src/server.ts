@@ -40,24 +40,19 @@ app.use(
 );
 
 io.on("connection", (socket) => {
-  console.log("user connected ", socket.id);
   socket.on("join room", (roomId) => {
-    console.log("user joined room ", roomId);
     socket.join(roomId);
   });
 
   socket.on("leave room", (roomId) => {
-    console.log("user leaved room ", roomId);
     socket.leave(roomId);
   });
 
   socket.on("room added", (room) => {
-    console.log("room added");
     socket.emit(room);
   });
 
   socket.on("message", (data) => {
-    console.log("messages received");
     io.to(data?.room).emit("message", data?.message);
   });
 });

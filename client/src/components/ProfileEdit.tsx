@@ -41,6 +41,8 @@ export default function ProfileEdit({ user, setUser }: Props) {
     } catch (error) {}
   };
 
+
+
   return (
     <div className="w-full p-2 border-gray-300 rounded-lg sm:border sm:mt-2 sm:px-10 sm:py-5 md:py-8">
       {isModalOpen && (
@@ -89,7 +91,7 @@ export default function ProfileEdit({ user, setUser }: Props) {
             }
           />
 
-          <small className="block text-sm text-green-500 text-semibold">
+          <small className="block mt-2 text-sm text-green-500 text-semibold">
             {message}
           </small>
         </div>
@@ -97,6 +99,7 @@ export default function ProfileEdit({ user, setUser }: Props) {
           <button
             className="!h-10 !min-h-0 px-5 btn btn-primary "
             type="submit"
+            disabled={formik.values.username == user.username}
           >
             Save
           </button>
@@ -104,6 +107,7 @@ export default function ProfileEdit({ user, setUser }: Props) {
             className="!h-10 !min-h-0 text-red-400 bg-transparent border border-red-400 btn-error btn focus:bg-red-400/80 hover:bg-red-400/80 hover:text-base-content focus:text-base-content "
             type="button"
             onClick={handleResetPicture}
+            disabled={!user.avatar.includes("/api/user/avatar/")}
           >
             Remove Picture
           </button>

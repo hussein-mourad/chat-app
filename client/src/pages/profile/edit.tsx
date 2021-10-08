@@ -27,7 +27,7 @@ export default function Edit() {
       </Head>
       <NavBar user={user || serverUser} />
       <div className="flex flex-col max-w-3xl mx-auto mt-8">
-        <Link href="/" passHref>
+        <Link href="/profile" passHref>
           <button className="flex items-center text-base text-blue-400 focus:outline-none">
             <ChevronLeftIcon className="mr-1" /> Back
           </button>

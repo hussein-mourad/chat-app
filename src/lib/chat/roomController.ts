@@ -24,10 +24,6 @@ export async function createRoom(req: Request, res: Response) {
 export async function getRoom(req: Request, res: Response) {
   const user = res.locals.user;
 
-  console.log(
-    "🚀 ~ file: roomController.ts ~ line 27 ~ getRoom ~ req.params.id",
-    req.params.id
-  );
   if (!req.params.id) return res.status(401).json("Room not found.");
 
   try {
@@ -35,11 +31,6 @@ export async function getRoom(req: Request, res: Response) {
       .populate("members", "username avatar")
       .populate("messages")
       .exec((err, doc) => {
-        if (err)
-          console.log(
-            "🚀 ~ file: roomController.ts ~ line 33 ~ .exec ~ err",
-            err
-          );
         User.populate(
           doc,
           {
@@ -64,10 +55,6 @@ export async function findAllRooms(req: Request, res: Response) {
       .populate("messages")
       .exec((err, docs) => {
         if (err)
-          console.log(
-            "🚀 ~ file: roomController.ts ~ line 57 ~ .exec ~ err",
-            err
-          );
         User.populate(
           docs,
           {
