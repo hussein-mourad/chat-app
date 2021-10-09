@@ -24,7 +24,7 @@ export default function ProfileEdit({ user, setUser }: Props) {
     },
     onSubmit: async (values, actions) => {
       try {
-        const response = await axios.put(process.env.BACKEND_URL+"/api/user/", values);
+        const response = await axios.put("/api/user/", values);
         setMessage(response.data);
         setUser({ ...user, username: values.username });
         setTimeout(() => setMessage(""), 3000);
@@ -36,12 +36,10 @@ export default function ProfileEdit({ user, setUser }: Props) {
 
   const handleResetPicture = async () => {
     try {
-      const response = await axios.put(process.env.BACKEND_URL+"/api/user/?removePicture=true");
+      const response = await axios.put("/api/user/?removePicture=true");
       setUser({ ...user, avatar: response.data.avatar });
     } catch (error) {}
   };
-
-
 
   return (
     <div className="w-full p-2 border-gray-300 rounded-lg sm:border sm:mt-2 sm:px-10 sm:py-5 md:py-8">
@@ -107,7 +105,7 @@ export default function ProfileEdit({ user, setUser }: Props) {
             className="!h-10 !min-h-0 text-red-400 bg-transparent border border-red-400 btn-error btn focus:bg-red-400/80 hover:bg-red-400/80 hover:text-base-content focus:text-base-content "
             type="button"
             onClick={handleResetPicture}
-            disabled={!user.avatar.includes(process.env.BACKEND_URL+"/api/user/avatar/")}
+            disabled={!user.avatar.includes("/api/user/avatar/")}
           >
             Remove Picture
           </button>

@@ -37,7 +37,7 @@ export default function MessageForm({ room }: Props): ReactElement {
       actions.setSubmitting(false);
       socket.connect();
       try {
-        const response = await axios.post(process.env.BACKEND_URL+"/api/messages/", {
+        const response = await axios.post("/api/messages/", {
           body: values.message,
           currentRoomId: room?._id,
         });

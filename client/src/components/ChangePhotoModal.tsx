@@ -127,22 +127,25 @@ function ChangePhotoModal({ user, setUser, stateHandler }: Props) {
     xhr.responseType = "json";
     var formData = new FormData();
     formData.append("image", file);
-    xhr.open("PUT", process.env.BACKEND_URL+`/api/user/avatar/`, true);
+    xhr.open(
+      "PUT",
+      `/api/user/avatar/`,
+      true
+    );
     // Add following event listener
     xhr.upload.addEventListener("progress", function (e) {
       setProgressValue((e.loaded / e.total) * 100 || 0);
     });
-    xhr.addEventListener("readystatechange", function (e:any) {
+    xhr.addEventListener("readystatechange", function (e: any) {
       if (xhr.readyState == 4 && xhr.status == 200) {
-        setUser(
-          { ...user, avatar: xhr.response.filePath as string }
-        );
+        setUser({ ...user, avatar: xhr.response.filePath as string });
         stateHandler();
       } else if (xhr.readyState == 4 && xhr.status != 200) {
-        console.log(e);  
+        console.error(e);
         // setError(e.currentTarget.response.substring(0,20));
       }
     });
+    xhr.withCredentials = true;
     xhr.send(formData);
   };
 

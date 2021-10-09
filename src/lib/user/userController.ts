@@ -14,7 +14,7 @@ export async function updateUserData(req: Request, res: Response) {
   let { removePicture } = req.query;
   if (removePicture === "true") {
     fs.unlink(
-      path.join(UPLOAD_PATH, user.avatar.replace(process.env.BACKEND_URL+"/api/user/avatar/", "")),
+      path.join(UPLOAD_PATH, user.avatar.replace("/api/user/avatar/", "")),
       (err) => {}
     );
     let avatar = `https://eu.ui-avatars.com/api/?name=${
@@ -37,7 +37,7 @@ export async function updateUserData(req: Request, res: Response) {
       { runValidators: true }
     );
 
-    if (!user.avatar.includes(process.env.BACKEND_URL+"/api/user/avatar/")) {
+    if (!user.avatar.includes("/api/user/avatar/")) {
       let avatar = `https://eu.ui-avatars.com/api/?name=${
         username[0] + username[1]
       }`;
@@ -80,7 +80,7 @@ export function uploadPhoto(req: Request, res: Response) {
       if (!files || !files.image) throw new Error("No files received!");
       const allowedExtensions = ["jpg", "png", "jpeg"];
       const filePath = path.join(
-        process.env.BACKEND_URL+"/api/user/avatar/",
+        "/api/user/avatar/",
         files.image[0].path.replace(UPLOAD_PATH, "")
       );
 

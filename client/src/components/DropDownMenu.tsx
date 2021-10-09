@@ -26,7 +26,7 @@ export default function DropDownMenu({
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post(process.env.BACKEND_URL+"/api/auth/logout");
+      await axios.post("/api/auth/logout");
       router.push("/login");
     } catch (error) {}
   };
@@ -48,7 +48,7 @@ export default function DropDownMenu({
         <div className={styles}>
           <ul
             tabIndex={0}
-            className="p-2 !pl-2 menu bg-base-100/70 rounded-box w-52 space-y-2"
+            className="p-2 !pl-2 menu bg-base-100 rounded-box w-52 space-y-2"
           >
             <li className="w-full">
               <a className="space-x-3" onClick={() => router.push("/profile")}>

@@ -54,7 +54,6 @@ export async function findAllRooms(req: Request, res: Response) {
       .populate("members", "username avatar")
       .populate("messages")
       .exec((err, docs) => {
-        if (err)
         User.populate(
           docs,
           {

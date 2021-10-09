@@ -50,7 +50,7 @@ export default function AuthCard({ authType, url }: Props): ReactElement {
   useEffect(() => {
     (async () => {
       try {
-        await axios.post(process.env.BACKEND_URL+"/api/auth");
+        await axios.post("/api/auth");
         router.push("/");
       } catch (err) {
         setIsLoading(false);
@@ -68,7 +68,7 @@ export default function AuthCard({ authType, url }: Props): ReactElement {
     onSubmit: async (values, actions) => {
       actions.setSubmitting(false);
       try {
-        const response = await axios.post(url, values);
+        await axios.post(url, values, { withCredentials: true });
         router.push("/");
       } catch (err: any) {
         if (err?.response?.data.errors) {

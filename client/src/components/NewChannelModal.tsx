@@ -54,12 +54,16 @@ export default function NewChannelModal({
     onSubmit: async (values: FormValues, actions) => {
       actions.setSubmitting(false);
       try {
-        const response = await axios.post(process.env.BACKEND_URL+"/api/rooms", values);
+        socket.connect();
+        const response = await axios.post("/api/rooms", values);
         socket.emit("room added", response.data);
         closeHandler();
       } catch (err: any) {
+        const message =
+          err.response.data.errors.message ||
+          "Unexpected error please try again.";
         actions.setErrors({
-          name: "Unexpected error please try again.",
+          name: message,
         });
       }
     },

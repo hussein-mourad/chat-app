@@ -14,26 +14,27 @@ interface Props {
 }
 
 export default function MainDrawer({ toggleModal }: Props): ReactElement {
-  const [searchKey, setSearchKey] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const { user } = useAuthentication();
   const { array: rooms, set: setRooms, push: pushRoom } = useArray<IRoom>([]);
   const socket = useContext(SocketContext);
-
+  
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get(process.env.BACKEND_URL+"/api/rooms/");
+        const response = await axios.get("/api/rooms/");
         setRooms(response.data);
       } catch (error) {
         console.log(error);
       }
     })();
-
+    
     socket.connect();
     socket.on("room added", (room) => {
       pushRoom(room);
     });
+
     return () => {};
   }, []);
 
@@ -55,12 +56,12 @@ export default function MainDrawer({ toggleModal }: Props): ReactElement {
           left={<Search style={{ margin: "10px" }} />}
           placeholder="Search"
           options={rooms.flatMap((room) => room.name)}
-          value={searchKey}
-          onChange={(e) => setSearchKey(e.target.value)}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         <div className="mt-7">
           {rooms
-            .filter((room) => room.name.includes(searchKey))
+            .filter((room) => room.name.includes(searchTerm))
             .map((room: IRoom) => (
               <Link key={room._id} href={"/rooms/" + room._id} passHref>
                 <a className="block w-full p-1 my-1 hover:bg-base-200/50 rounded-btn">

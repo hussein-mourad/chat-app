@@ -1,6 +1,5 @@
 import MongoStore from "connect-mongo";
 import cookieParser from "cookie-parser";
-import cors from "cors";
 import dotenv from "dotenv";
 import express, { Application } from "express";
 import session from "express-session";
@@ -27,12 +26,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIES_SECRET));
 app.use(express.static(path.join(__dirname, "../public")));
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL,
-    optionsSuccessStatus: 200,
-  })
-);
 
 app.use(
   session({
@@ -56,7 +49,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("room added", (room) => {
-    socket.emit(room);
+    socket.emit("room added", room);
   });
 
   socket.on("message", (data) => {

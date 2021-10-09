@@ -14,8 +14,10 @@ export default function Room({}: Props): ReactElement {
   const socket = useContext(SocketContext);
   const { isLoading, user } = useAuthentication();
   let url;
-  if(roomId) url =process.env.BACKEND_URL+"/api/rooms/" + roomId;
-  const { data: room, error } = useFetch<IRoom>(url);
+  if (roomId) url = "/api/rooms/" + roomId;
+  const { data: room, error } = useFetch<IRoom>(url, {
+    credentials: "include",
+  });
 
   useEffect(() => {
     socket.connect();
