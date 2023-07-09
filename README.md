@@ -7,7 +7,7 @@
 
 <div align="center">
   <h3>
-    <a href="https://chatapp-dev0.herokuapp.com/">
+    <a href="https://chat-app-mern-stack.onrender.com/">
       Demo
     </a>
     <span> | </span>
